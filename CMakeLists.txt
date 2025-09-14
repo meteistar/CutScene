@@ -17,6 +17,14 @@ qt_add_qml_module(appCutScene
     VERSION 1.0
     QML_FILES
 	qml/Main.qml
+	QML_FILES qml/components/ToolBar.qml
+	RESOURCES qml.qrc
+)
+
+qt_add_resources(appCutScene "icons"
+	PREFIX "/"
+	FILES qml/assets/icons/folder-open.svg
+	FILES qml/assets/icons/save.svg
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
