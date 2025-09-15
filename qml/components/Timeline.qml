@@ -7,7 +7,7 @@ Rectangle {
     height: 30
     color: "#222222"
 
-    property int totalSeconds: 10 // timeline uzunluğu
+    property int totalSeconds: 10
     property int pixelsPerSecond: 160
 
     Canvas {
@@ -68,17 +68,16 @@ Rectangle {
         // anchors.leftMargin: 5
         x: 0
 
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.SizeHorCursor
-            drag.target: parent
-            drag.axis: Drag.XAxis
-            drag.minimumX: 0
-            drag.maximumX: timeline.width - playhead.width
-        }
+        // MouseArea {
+        //     anchors.fill: parent
+        //     cursorShape: Qt.SizeHorCursor
+        //     drag.target: parent
+        //     drag.axis: Drag.XAxis
+        //     drag.minimumX: 0
+        //     drag.maximumX: timeline.width - playhead.width
+        // }
     }
 
-    // Üçgen
     Canvas {
         id: triangle
         width: 12
@@ -96,6 +95,18 @@ Rectangle {
             ctx.lineTo(width / 2, height) // alt orta (tepesi aşağı)
             ctx.closePath()
             ctx.fill()
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.SizeHorCursor
+        drag.target: playhead
+        drag.axis: Drag.XAxis
+        drag.minimumX: 0
+        drag.maximumX: timeline.width - playhead.width
+        onClicked: function(mouse) {
+            playhead.x = Math.min(Math.max(mouse.x - playhead.width/2, 0), timeline.width - playhead.width)
         }
     }
 }
