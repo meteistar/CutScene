@@ -25,6 +25,7 @@ qt_add_qml_module(appCutScene
 	qml/Main.qml
 	QML_FILES qml/components/ToolBar.qml
 	RESOURCES qml.qrc
+	QML_FILES qml/components/Timeline.qml
 )
 
 qt_add_resources(appCutScene "icons"

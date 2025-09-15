@@ -64,6 +64,13 @@ Window {
         }
     }
 
+    Timeline {
+        id: timeline
+        width: parent.width
+        y:100
+        // anchors.bottom: parent.bottom
+    }
+
     Connections {
         target: videoThumbnailLoader
         function onThumbnailReady(image, duration) {
