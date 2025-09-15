@@ -19,6 +19,7 @@ QVariant MediaItemModel::data(const QModelIndex &index, int role) const {
     case IdRole: return item.id;
     case FileNameRole: return item.fileName;
     case DurationRole: return item.duration;
+    case FileSizeRole: return item.fileSize;
     }
     return {};
 }
@@ -27,7 +28,8 @@ QHash<int, QByteArray> MediaItemModel::roleNames() const {
     return {
         {IdRole, "id"},
         {FileNameRole, "fileName"},
-        {DurationRole, "duration"}
+        {DurationRole, "duration"},
+        {FileSizeRole, "fileSize"}
     };
 }
 
@@ -48,6 +50,15 @@ void MediaItemModel::onThumbnailReady(const QString &imageId, const QString &dur
     item.id = QUuid::createUuid().toString(QUuid::Id128);
     item.fileName = info.fileName();
     item.duration = duration;
+
+    qint64 bytes = info.size();
+    if (bytes < 1024)
+        item.fileSize = QString::number(bytes) + " B";
+    else if (bytes < 1024 * 1024)
+        item.fileSize = QString::number(bytes / 1024.0, 'f', 1) + " KB";
+    else
+        item.fileSize = QString::number(bytes / (1024.0 * 1024.0), 'f', 1) + " MB";
+
     item.thumbnail = QImage(imageId); // imageId path gibi geldiyse QImage yükle
 
     beginInsertRows(QModelIndex(), m_items.size(), m_items.size());

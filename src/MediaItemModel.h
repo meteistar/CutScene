@@ -8,6 +8,7 @@ struct MediaItem {
     QString id;
     QString fileName;
     QString duration;
+    QString fileSize;
     QImage  thumbnail;
 };
 
@@ -17,7 +18,8 @@ public:
     enum Roles {
         IdRole = Qt::UserRole + 1,
         FileNameRole,
-        DurationRole
+        DurationRole,
+        FileSizeRole
     };
     Q_ENUM(Roles)
 
