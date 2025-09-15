@@ -3,6 +3,8 @@
 #include <QQmlContext>
 
 #include "VideoThumbnailLoader.h"
+#include "MediaItemModel.h"
+#include "MediaImageProvider.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +14,11 @@ int main(int argc, char *argv[])
 
     VideoThumbnailLoader videoLoader;
     engine.rootContext()->setContextProperty("videoThumbnailLoader", &videoLoader);
+
+    MediaItemModel model;
+    engine.rootContext()->setContextProperty("mediaModel", &model);
+
+    engine.addImageProvider("media", new MediaImageProvider(&model));
 
     const QUrl url(QStringLiteral("qrc:/CutScene/qml/Main.qml"));
     QObject::connect(

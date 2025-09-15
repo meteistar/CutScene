@@ -20,41 +20,32 @@ Window {
         anchors.fill: parent
         onDropped: {
             if (drop.hasUrls) {
-                let filePath = drop.urls[0].toString().replace("file:///", "")
-                console.log("Dropped file:", filePath)
-                videoThumbnailLoader.loadFile(filePath)
+                for (var i = 0; i < drop.urls.length; ++i) {
+                    mediaModel.addMedia(drop.urls[i].toString().replace("file:///", ""))
+                }
             }
         }
     }
 
-    Column {
-            anchors.centerIn: parent
-            spacing: 10
+    ListView {
+        id: mediaList
+        anchors.fill: parent
+        model: mediaModel
 
-            Rectangle {
-                id: previewBox
-                width: 300
-                height: 200
-                color: "#444"
-                radius: 8
-                border.color: "#888"
-
-                Image {
-                    id: thumbnail
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                }
-
-                Text {
-                    id: durationText
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 5
-                    color: "white"
-                    font.pixelSize: 14
-                }
+        delegate: Row {
+            spacing: 8
+            height: 80
+            Image {
+                width: 80; height: 60
+                source: "image://media/" + id
+                fillMode: Image.PreserveAspectFit
+            }
+            Column {
+                Text { text: fileName; font.pixelSize: 14 }
+                Text { text: duration; font.pixelSize: 12; color: "gray" }
             }
         }
+    }
 
     Connections {
         target: videoThumbnailLoader

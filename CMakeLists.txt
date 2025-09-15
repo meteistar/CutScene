@@ -13,6 +13,9 @@ qt_add_executable(appCutScene
     src/main.cpp
     src/VideoThumbnailLoader.cpp
     src/VideoThumbnailLoader.h
+    src/MediaItemModel.h
+    src/MediaItemModel.cpp
+    src/MediaImageProvider.h
 )
 
 qt_add_qml_module(appCutScene
