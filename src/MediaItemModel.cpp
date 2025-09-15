@@ -34,6 +34,18 @@ QHash<int, QByteArray> MediaItemModel::roleNames() const {
 }
 
 void MediaItemModel::addMedia(const QString &filePath) {
+    QFileInfo info(filePath);
+    QString ext = info.suffix().toLower();
+
+    QStringList supported = {
+        "mp4","mov","avi","mkv","flv","wmv","ts",
+        "mp3","wav","aac","flac","ogg"
+    };
+
+    if (!supported.contains(ext)) {
+        qWarning() << "Unsupported file type:" << ext;
+        return;
+    }
     m_pendingFilePath = filePath;
 
     auto loader = new VideoThumbnailLoader(this);
