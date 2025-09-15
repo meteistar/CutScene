@@ -32,17 +32,34 @@ Window {
         anchors.fill: parent
         model: mediaModel
 
-        delegate: Row {
-            spacing: 8
+        delegate: Rectangle {
+            width: parent.width
             height: 80
-            Image {
-                width: 80; height: 60
-                source: "image://media/" + id
-                fillMode: Image.PreserveAspectFit
-            }
-            Column {
-                Text { text: fileName; font.pixelSize: 14 }
-                Text { text: duration; font.pixelSize: 12; color: "gray" }
+            radius: 8
+            color: "#f0f0f0"
+            border.color: "#cccccc"
+
+            Row {
+                spacing: 8
+                anchors.verticalCenter: parent.verticalCenter
+                // anchors.fill: parent
+                anchors.margins: 8
+
+                Image {
+                    width: 60
+                    height: 40
+                    source: "image://media/" + id
+                    fillMode: Image.PreserveAspectFit
+                }
+
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 2
+
+                    Text { text: fileName; font.pixelSize: 14; font.bold: true }
+                    Text { text: "Duration: " + duration; font.pixelSize: 12; color: "gray" }
+                    Text { text: "Size: " + fileSize; font.pixelSize: 12; color: "gray" }
+                }
             }
         }
     }
