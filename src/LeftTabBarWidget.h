@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QLabel>
+#include <QGridLayout>
 
 class LeftTabBarWidget : public QWidget
 {

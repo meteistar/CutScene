@@ -117,15 +117,56 @@ void LeftTabBarWidget::setupContent()
     m_filtersContent->setStyleSheet("QWidget { background-color: #1e1e1e; }");
     QVBoxLayout *filtersLayout = new QVBoxLayout(m_filtersContent);
     filtersLayout->setContentsMargins(16, 16, 16, 16);
+    filtersLayout->setSpacing(16);
     
     QLabel *filtersLabel = new QLabel("Filters", m_filtersContent);
-    filtersLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 16px; }");
+    filtersLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 8px; }");
     filtersLayout->addWidget(filtersLabel);
     
-    QLabel *filtersDesc = new QLabel("Color correction and filters", m_filtersContent);
-    filtersDesc->setStyleSheet("QLabel { color: #cccccc; font-size: 12px; }");
-    filtersLayout->addWidget(filtersDesc);
+    // Create grid layout for filter buttons
+    QGridLayout *filtersGrid = new QGridLayout();
+    filtersGrid->setSpacing(8);
     
+    // Filter button names
+    QStringList filterNames = {"Original", "Vintage", "B&W", "Sepia", "Cool", "Warm", "Vivid", "Dramatic"};
+    
+    // Create filter buttons
+    for (int i = 0; i < 8; ++i) {
+        QPushButton *filterButton = new QPushButton(filterNames[i], m_filtersContent);
+        filterButton->setFixedSize(100, 60);
+        filterButton->setStyleSheet(
+            "QPushButton { "
+            "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+            "        stop:0 #8b5cf6, stop:1 #7c3aed); "
+            "    color: #ffffff; "
+            "    border: none; "
+            "    border-radius: 8px; "
+            "    font-size: 12px; "
+            "    font-weight: bold; "
+            "} "
+            "QPushButton:hover { "
+            "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+            "        stop:0 #a78bfa, stop:1 #8b5cf6); "
+            "    border: 2px solid #ffffff; "
+            "} "
+            "QPushButton:pressed { "
+            "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+            "        stop:0 #7c3aed, stop:1 #6d28d9); "
+            "} "
+        );
+        
+        // Add to grid (2 columns, 4 rows)
+        int row = i / 2;
+        int col = i % 2;
+        filtersGrid->addWidget(filterButton, row, col);
+        
+        // Connect signal
+        connect(filterButton, &QPushButton::clicked, [filterNames, i]() {
+            qDebug() << "Filter clicked:" << filterNames[i];
+        });
+    }
+    
+    filtersLayout->addLayout(filtersGrid);
     filtersLayout->addStretch();
     m_contentStack->addWidget(m_filtersContent);
     
