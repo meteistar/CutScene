@@ -29,7 +29,7 @@ void HeaderBarWidget::setupUI()
     // Create main layout
     m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(16, 12, 16, 12);
-    m_layout->setSpacing(20);
+    m_layout->setSpacing(8);
 
     setupMenuButtons();
 
@@ -59,7 +59,7 @@ void HeaderBarWidget::setupMenuButtons()
         "    color: #ffffff; "
         "    background-color: transparent; "
         "    border: none; "
-        "    padding: 10px 16px; "
+        "    padding: 10px 6px; "
         "    font-size: 14px; "
         "    min-height: 26px; "
         "} "
