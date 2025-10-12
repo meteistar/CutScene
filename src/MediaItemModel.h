@@ -30,6 +30,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void addMedia(const QString &filePath);
+    Q_INVOKABLE QVariantMap get(int index) const;
 
     QImage requestImage(const QString &id) const;
 

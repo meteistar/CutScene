@@ -55,6 +55,21 @@ void MediaItemModel::addMedia(const QString &filePath) {
     loader->loadFile(filePath);
 }
 
+QVariantMap MediaItemModel::get(int index) const
+{
+    QVariantMap map;
+    if (index < 0 || index >= m_items.size())
+        return map;
+
+    const auto &item = m_items.at(index);
+    map["id"] = item.id;
+    map["fileName"] = item.fileName;
+    map["duration"] = item.duration;
+    map["fileSize"] = item.fileSize;
+
+    return map;
+}
+
 void MediaItemModel::onThumbnailReady(const QString &imageId, const QString &duration) {
     QFileInfo info(m_pendingFilePath);
 
