@@ -98,8 +98,8 @@ void HeaderBarWidget::setupActionButtons()
     m_undoButton = new QPushButton("↶", this);
     m_redoButton = new QPushButton("↷", this);
     m_settingsButton = new QPushButton("⚙", this);
-    m_importButton = new QPushButton("📥", this);
-    m_exportButton = new QPushButton("📤", this);
+    m_importButton = new QPushButton("📥 Import", this);
+    m_exportButton = new QPushButton("📤 Export", this);
 
     // Style action buttons
     QString actionButtonStyle =
@@ -108,9 +108,10 @@ void HeaderBarWidget::setupActionButtons()
         "    background-color: transparent; "
         "    border: 1px solid #555555; "
         "    border-radius: 4px; "
-        "    font-size: 16px; "
+        "    font-size: 14px; "
         "    min-width: 36px; "
-        "    min-height: 36px; "
+        "    min-height: 20px; "
+        "    padding: 8px 12px; "
         "} "
         "QPushButton:hover { "
         "    background-color: #3b3b3b; "
