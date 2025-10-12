@@ -7,6 +7,7 @@
 #include <QStackedWidget>
 #include <QLabel>
 #include <QGridLayout>
+#include <QSlider>
 
 class LeftTabBarWidget : public QWidget
 {

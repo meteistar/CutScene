@@ -100,14 +100,185 @@ void LeftTabBarWidget::setupContent()
     m_effectsContent->setStyleSheet("QWidget { background-color: #1e1e1e; }");
     QVBoxLayout *effectsLayout = new QVBoxLayout(m_effectsContent);
     effectsLayout->setContentsMargins(16, 16, 16, 16);
+    effectsLayout->setSpacing(12);
     
     QLabel *effectsLabel = new QLabel("Effects", m_effectsContent);
-    effectsLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 16px; }");
+    effectsLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 8px; }");
     effectsLayout->addWidget(effectsLabel);
     
-    QLabel *effectsDesc = new QLabel("Video effects and transitions", m_effectsContent);
-    effectsDesc->setStyleSheet("QLabel { color: #cccccc; font-size: 12px; }");
-    effectsLayout->addWidget(effectsDesc);
+    // Brightness
+    QLabel *brightnessLabel = new QLabel("Brightness", m_effectsContent);
+    brightnessLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    brightnessLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(brightnessLabel);
+    
+    QSlider *brightnessSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    brightnessSlider->setRange(0, 100);
+    brightnessSlider->setValue(50);
+    brightnessSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(brightnessSlider);
+    
+    // Contrast
+    QLabel *contrastLabel = new QLabel("Contrast", m_effectsContent);
+    contrastLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    contrastLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(contrastLabel);
+    
+    QSlider *contrastSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    contrastSlider->setRange(0, 100);
+    contrastSlider->setValue(50);
+    contrastSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(contrastSlider);
+    
+    // Saturation
+    QLabel *saturationLabel = new QLabel("Saturation", m_effectsContent);
+    saturationLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    saturationLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(saturationLabel);
+    
+    QSlider *saturationSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    saturationSlider->setRange(0, 100);
+    saturationSlider->setValue(50);
+    saturationSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(saturationSlider);
+    
+    // Exposure
+    QLabel *exposureLabel = new QLabel("Exposure", m_effectsContent);
+    exposureLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    exposureLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(exposureLabel);
+    
+    QSlider *exposureSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    exposureSlider->setRange(0, 100);
+    exposureSlider->setValue(50);
+    exposureSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(exposureSlider);
+    
+    // Blur
+    QLabel *blurLabel = new QLabel("Blur", m_effectsContent);
+    blurLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    blurLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(blurLabel);
+    
+    QSlider *blurSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    blurSlider->setRange(0, 100);
+    blurSlider->setValue(0);
+    blurSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(blurSlider);
+    
+    // Vignette
+    QLabel *vignetteLabel = new QLabel("Vignette", m_effectsContent);
+    vignetteLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+    vignetteLabel->setAlignment(Qt::AlignLeft);
+    effectsLayout->addWidget(vignetteLabel);
+    
+    QSlider *vignetteSlider = new QSlider(Qt::Horizontal, m_effectsContent);
+    vignetteSlider->setRange(0, 100);
+    vignetteSlider->setValue(0);
+    vignetteSlider->setStyleSheet(
+        "QSlider::groove:horizontal { "
+        "    border: 1px solid #555555; "
+        "    height: 6px; "
+        "    background: #2b2b2b; "
+        "    border-radius: 3px; "
+        "} "
+        "QSlider::handle:horizontal { "
+        "    background: #0078d4; "
+        "    border: 1px solid #0078d4; "
+        "    width: 16px; "
+        "    margin: -5px 0; "
+        "    border-radius: 8px; "
+        "} "
+        "QSlider::handle:horizontal:hover { "
+        "    background: #106ebe; "
+        "} "
+    );
+    effectsLayout->addWidget(vignetteSlider);
     
     effectsLayout->addStretch();
     m_contentStack->addWidget(m_effectsContent);
