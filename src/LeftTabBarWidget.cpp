@@ -352,13 +352,8 @@ void LeftTabBarWidget::setupContent()
     presetsHeading->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 8px; }");
     textLayout->addWidget(presetsHeading);
     
-    // Text inputs: Title, Subtitle, Caption, Lower Third
+    // Text inputs: Title, Subtitle, Caption, Lower Third (labels removed, placeholders only)
     auto makeTextInput = [&](const QString &label){
-        QLabel *l = new QLabel(label, m_textContent);
-        l->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
-        l->setAlignment(Qt::AlignLeft);
-        textLayout->addWidget(l);
-        
         QLineEdit *edit = new QLineEdit(m_textContent);
         edit->setPlaceholderText(label);
         edit->setStyleSheet(
