@@ -13,6 +13,7 @@
 #include <QTime>
 #include "VideoThumbnailLoader.h"
 #include "HeaderBarWidget.h"
+#include "LeftTabBarWidget.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -181,31 +182,37 @@ int main(int argc, char *argv[])
 
     QWidget window;
     window.setWindowTitle("CutScene");
-    window.resize(800, 600);
+    window.resize(1000, 700);
     
-    QVBoxLayout *layout = new QVBoxLayout(&window);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0);
+    QVBoxLayout *mainLayout = new QVBoxLayout(&window);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
 
     // Add HeaderBar
     HeaderBarWidget *headerBar = new HeaderBarWidget(&window);
-    layout->addWidget(headerBar);
+    mainLayout->addWidget(headerBar);
+
+    // Create horizontal layout for sidebar and main content
+    QHBoxLayout *contentLayout = new QHBoxLayout();
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setSpacing(0);
+
+    // Add LeftTabBar
+    LeftTabBarWidget *leftTabBar = new LeftTabBarWidget(&window);
+    contentLayout->addWidget(leftTabBar);
 
     // Add main content area
-    QWidget *contentArea = new QWidget(&window);
-    contentArea->setStyleSheet("QWidget { background-color: #1e1e1e; }");
-    QVBoxLayout *contentLayout = new QVBoxLayout(contentArea);
+    QWidget *mainContentArea = new QWidget(&window);
+    mainContentArea->setStyleSheet("QWidget { background-color: #1e1e1e; }");
+    QVBoxLayout *mainContentLayout = new QVBoxLayout(mainContentArea);
     
-    // VideoDropWidget *dropWidget = new VideoDropWidget;
-    // dropWidget->setFixedSize(400, 250);
-
-    // VideoReceiver *receiver = new VideoReceiver;
-    // receiver->setFixedSize(400, 100);
-
-    // contentLayout->addWidget(dropWidget);
-    // contentLayout->addWidget(receiver);
+    QLabel *mainLabel = new QLabel("Main Content Area", mainContentArea);
+    mainLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 18px; font-weight: bold; }");
+    mainLabel->setAlignment(Qt::AlignCenter);
+    mainContentLayout->addWidget(mainLabel);
     
-    layout->addWidget(contentArea);
+    contentLayout->addWidget(mainContentArea);
+    mainLayout->addLayout(contentLayout);
 
     // Connect header bar signals
     QObject::connect(headerBar, &HeaderBarWidget::fileClicked, []() {
