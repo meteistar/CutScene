@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QSlider>
+#include <QLineEdit>
 
 class LeftTabBarWidget : public QWidget
 {

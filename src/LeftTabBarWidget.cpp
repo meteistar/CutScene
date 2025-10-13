@@ -346,14 +346,72 @@ void LeftTabBarWidget::setupContent()
     m_textContent->setStyleSheet("QWidget { background-color: #1e1e1e; }");
     QVBoxLayout *textLayout = new QVBoxLayout(m_textContent);
     textLayout->setContentsMargins(16, 16, 16, 16);
+    textLayout->setSpacing(12);
     
-    QLabel *textLabel = new QLabel("Text", m_textContent);
-    textLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 16px; }");
-    textLayout->addWidget(textLabel);
+    QLabel *presetsHeading = new QLabel("Text Presets", m_textContent);
+    presetsHeading->setStyleSheet("QLabel { color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 8px; }");
+    textLayout->addWidget(presetsHeading);
     
-    QLabel *textDesc = new QLabel("Text overlays and titles", m_textContent);
-    textDesc->setStyleSheet("QLabel { color: #cccccc; font-size: 12px; }");
-    textLayout->addWidget(textDesc);
+    // Text inputs: Title, Subtitle, Caption, Lower Third
+    auto makeTextInput = [&](const QString &label){
+        QLabel *l = new QLabel(label, m_textContent);
+        l->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+        l->setAlignment(Qt::AlignLeft);
+        textLayout->addWidget(l);
+        
+        QLineEdit *edit = new QLineEdit(m_textContent);
+        edit->setPlaceholderText(label);
+        edit->setStyleSheet(
+            "QLineEdit { "
+            "    color: #ffffff; "
+            "    background-color: #2b2b2b; "
+            "    border: 1px solid #3f3f3f; "
+            "    border-radius: 6px; "
+            "    padding: 6px 10px; "
+            "} "
+            "QLineEdit:focus { border: 1px solid #0078d4; }"
+        );
+        textLayout->addWidget(edit);
+    };
+    
+    makeTextInput("Title");
+    makeTextInput("Subtitle");
+    makeTextInput("Caption");
+    makeTextInput("Lower Third");
+    
+    // Sliders: Font Size, Opacity
+    auto makeLabeledSlider = [&](const QString &label, int min, int max, int value){
+        QLabel *l = new QLabel(label, m_textContent);
+        l->setStyleSheet("QLabel { color: #ffffff; font-size: 12px; }");
+        l->setAlignment(Qt::AlignLeft);
+        textLayout->addWidget(l);
+        
+        QSlider *slider = new QSlider(Qt::Horizontal, m_textContent);
+        slider->setRange(min, max);
+        slider->setValue(value);
+        slider->setStyleSheet(
+            "QSlider::groove:horizontal { "
+            "    border: 1px solid #555555; "
+            "    height: 6px; "
+            "    background: #2b2b2b; "
+            "    border-radius: 3px; "
+            "} "
+            "QSlider::handle:horizontal { "
+            "    background: #0078d4; "
+            "    border: 1px solid #0078d4; "
+            "    width: 16px; "
+            "    margin: -5px 0; "
+            "    border-radius: 8px; "
+            "} "
+            "QSlider::handle:horizontal:hover { "
+            "    background: #106ebe; "
+            "} "
+        );
+        textLayout->addWidget(slider);
+    };
+    
+    makeLabeledSlider("Font Size", 8, 96, 24);
+    makeLabeledSlider("Opacity", 0, 100, 100);
     
     textLayout->addStretch();
     m_contentStack->addWidget(m_textContent);
