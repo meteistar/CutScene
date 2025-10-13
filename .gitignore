@@ -1,0 +1,44 @@
+# Build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+rules.ninja
+
+# Qt specific
+*.qmlc
+*.jsc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qm
+*.prl
+
+# IDE specific
+CMakeLists.txt.user
+*.pro.user
+*.pro.user.*
+*.vcxproj.user
+*.vcxproj.filters
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Debug/Release
+Debug/
+Release/
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
+
+# Temporary files
+*.tmp
+*.temp
+*~
