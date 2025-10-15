@@ -14,6 +14,7 @@
 #include "VideoThumbnailLoader.h"
 #include "HeaderBarWidget.h"
 #include "LeftTabBarWidget.h"
+#include "RightSidebarWidget.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -211,7 +212,11 @@ int main(int argc, char *argv[])
     mainLabel->setAlignment(Qt::AlignCenter);
     mainContentLayout->addWidget(mainLabel);
     
-    contentLayout->addWidget(mainContentArea);
+    contentLayout->addWidget(mainContentArea, 1);
+
+    // Add Right Sidebar
+    RightSidebarWidget *rightSidebar = new RightSidebarWidget(&window);
+    contentLayout->addWidget(rightSidebar);
     mainLayout->addLayout(contentLayout);
 
     // Connect header bar signals
