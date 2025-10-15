@@ -104,32 +104,36 @@ QWidget *RightSidebarWidget::createListRowWidget(const MediaEntry &entry) const
     layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing(8);
 
-    // Square gray tile with icon and duration
+    // Square gray tile with icon
     QWidget *tile = new QWidget(row);
     tile->setFixedSize(48, 48);
     tile->setStyleSheet("QWidget { background-color: #333333; border-radius: 6px; }");
     QVBoxLayout *tileLayout = new QVBoxLayout(tile);
-    tileLayout->setContentsMargins(4, 4, 4, 2);
-    tileLayout->setSpacing(2);
+    tileLayout->setContentsMargins(4, 4, 4, 4);
+    tileLayout->setSpacing(0);
 
     QLabel *iconLabel = new QLabel(tile);
     iconLabel->setAlignment(Qt::AlignCenter);
-    iconLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 14px; }");
+    iconLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 18px; }");
     iconLabel->setText(entry.type == MediaEntry::Type::Video ? "🎥" : (entry.type == MediaEntry::Type::Audio ? "🎵" : "📄"));
+    tileLayout->addWidget(iconLabel);
 
-    QLabel *durLabel = new QLabel(entry.durationText, tile);
-    durLabel->setAlignment(Qt::AlignCenter);
-    durLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 10px; }");
+    // Right side: name on top, duration under it
+    QVBoxLayout *textCol = new QVBoxLayout();
+    textCol->setContentsMargins(0, 0, 0, 0);
+    textCol->setSpacing(2);
 
-    tileLayout->addWidget(iconLabel, 1);
-    tileLayout->addWidget(durLabel);
-
-    // Texts
     QLabel *nameLabel = new QLabel(entry.displayName, row);
-    nameLabel->setStyleSheet("QLabel { color: #ffffff; }");
+    nameLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 13px; }");
+
+    QLabel *durBelow = new QLabel(entry.durationText, row);
+    durBelow->setStyleSheet("QLabel { color: #bbbbbb; font-size: 11px; }");
+
+    textCol->addWidget(nameLabel);
+    textCol->addWidget(durBelow);
 
     layout->addWidget(tile);
-    layout->addWidget(nameLabel, 1);
+    layout->addLayout(textCol, 1);
 
     return row;
 }
