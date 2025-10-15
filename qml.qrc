@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>qml/assets/icons/folder-open.svg</file>
-        <file>qml/assets/icons/save.svg</file>
-    </qresource>
-</RCC>

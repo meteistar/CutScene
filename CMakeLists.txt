@@ -4,7 +4,7 @@ project(CutScene VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Widgets)
 find_package(FFMPEG REQUIRED)
 
 qt_standard_project_setup()
@@ -13,16 +13,29 @@ qt_add_executable(appCutScene
     src/main.cpp
     src/VideoThumbnailLoader.cpp
     src/VideoThumbnailLoader.h
+    src/HeaderBarWidget.cpp
+    src/HeaderBarWidget.h
+    src/LeftTabBarWidget.cpp
+    src/LeftTabBarWidget.h
+    src/RightSidebarWidget.cpp
+    src/RightSidebarWidget.h
+    # src/MediaItemModel.h
+    # src/MediaItemModel.cpp
+    src/MediaImageProvider.h
 )
 
-qt_add_qml_module(appCutScene
-    URI CutScene
-    VERSION 1.0
-    QML_FILES
-	qml/Main.qml
-	QML_FILES qml/components/ToolBar.qml
-	RESOURCES qml.qrc
-)
+# qt_add_qml_module(appCutScene
+#     URI CutScene
+#     VERSION 1.0
+#     QML_FILES
+# 	qml/Main.qml
+# 	QML_FILES qml/components/ToolBar.qml
+# 	RESOURCES qml.qrc
+# 	QML_FILES qml/components/Timeline.qml
+# 	SOURCES src/DragLabel.h
+# 	SOURCES src/DropWidget.h
+# 	SOURCES src/DragLabelWrapper.h
+# )
 
 qt_add_resources(appCutScene "icons"
 	PREFIX "/"
@@ -46,7 +59,7 @@ target_link_directories(appCutScene PRIVATE ${FFMPEG_LIBRARY_DIRS})
 
 
 target_link_libraries(appCutScene
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets
     PRIVATE avcodec
     PRIVATE avformat
     PRIVATE avutil
