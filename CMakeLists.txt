@@ -17,6 +17,8 @@ qt_add_executable(appCutScene
     src/HeaderBarWidget.h
     src/LeftTabBarWidget.cpp
     src/LeftTabBarWidget.h
+    src/RightSidebarWidget.cpp
+    src/RightSidebarWidget.h
     # src/MediaItemModel.h
     # src/MediaItemModel.cpp
     src/MediaImageProvider.h
