@@ -106,7 +106,7 @@ QWidget *RightSidebarWidget::createListRowWidget(const MediaEntry &entry) const
 
     // Square gray tile with icon
     QWidget *tile = new QWidget(row);
-    tile->setFixedSize(48, 48);
+    tile->setFixedSize(40, 40);
     tile->setStyleSheet("QWidget { background-color: #333333; border-radius: 6px; }");
     QVBoxLayout *tileLayout = new QVBoxLayout(tile);
     tileLayout->setContentsMargins(4, 4, 4, 4);
