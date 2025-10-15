@@ -60,6 +60,13 @@ void RightSidebarWidget::setupUI()
 
     connect(m_addButton, &QPushButton::clicked, this, &RightSidebarWidget::onAddClicked);
     connect(m_tabBar, &QTabBar::currentChanged, this, &RightSidebarWidget::onTabChanged);
+    connect(m_listWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
+        QWidget *w = m_listWidget->itemWidget(item);
+        if (!w) return;
+        // Retrieve file path from tooltip of row widget
+        const QString path = w->toolTip();
+        if (!path.isEmpty()) emit mediaSelected(path);
+    });
 }
 
 bool RightSidebarWidget::isVideo(const QString &path) const
@@ -100,6 +107,7 @@ void RightSidebarWidget::addMediaToModel(const QString &path)
 QWidget *RightSidebarWidget::createListRowWidget(const MediaEntry &entry) const
 {
     QWidget *row = new QWidget();
+    row->setToolTip(entry.filePath);
     QHBoxLayout *layout = new QHBoxLayout(row);
     layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing(8);
