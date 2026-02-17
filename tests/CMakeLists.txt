@@ -1,7 +1,10 @@
 add_executable(cutscene_tests
     test_main.cpp
     drop_widget_test.cpp
+    header_bar_widget_test.cpp
     ../src/DropWidget.h
+    ../src/HeaderBarWidget.cpp
+    ../src/HeaderBarWidget.h
 )
 
 set_target_properties(cutscene_tests PROPERTIES
