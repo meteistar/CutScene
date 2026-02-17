@@ -7,9 +7,11 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QLabel>
-#include <QtMultimediaWidgets/QVideoWidget>
+#include <QImage>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QAudioOutput>
+#include <QtMultimedia/QVideoSink>
+#include <QtMultimedia/QVideoFrame>
 
 class MainContentWidget : public QWidget
 {
@@ -19,6 +21,7 @@ public:
 
 public slots:
     void openMedia(const QString &filePath);
+    void setVintageEnabled(bool enabled);
 
 private slots:
     void togglePlay();
@@ -27,14 +30,18 @@ private slots:
     void setPosition(int value);
     void toggleMute();
     void toggleFullscreen();
+    void onVideoFrameChanged(const QVideoFrame &frame);
 
 private:
     static QString formatTime(qint64 ms);
+    void renderFrame(const QImage &frame);
+    static QImage applyVintage(const QImage &source);
+    void resizeEvent(QResizeEvent *event) override;
 
     QVBoxLayout *m_rootLayout;
     QWidget *m_videoArea;
     QVBoxLayout *m_videoLayout;
-    QVideoWidget *m_videoWidget;
+    QLabel *m_videoLabel;
 
     QHBoxLayout *m_controlsLayout;
     QPushButton *m_playPauseButton;
@@ -47,6 +54,9 @@ private:
 
     QMediaPlayer *m_player;
     QAudioOutput *m_audioOutput;
+    QVideoSink *m_videoSink;
+    QImage m_currentFrame;
+    bool m_vintageEnabled;
     qint64 m_durationMs;
 };
 

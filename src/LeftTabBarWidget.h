@@ -19,6 +19,7 @@ public:
 
 signals:
     void tabChanged(int index);
+    void vintageFilterChanged(bool enabled);
 
 private slots:
     void onTabClicked();
