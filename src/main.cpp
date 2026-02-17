@@ -15,6 +15,7 @@
 #include "HeaderBarWidget.h"
 #include "LeftTabBarWidget.h"
 #include "RightSidebarWidget.h"
+#include "MainContentWidget.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -202,16 +203,8 @@ int main(int argc, char *argv[])
     LeftTabBarWidget *leftTabBar = new LeftTabBarWidget(&window);
     contentLayout->addWidget(leftTabBar);
 
-    // Add main content area
-    QWidget *mainContentArea = new QWidget(&window);
-    mainContentArea->setStyleSheet("QWidget { background-color: #1e1e1e; }");
-    QVBoxLayout *mainContentLayout = new QVBoxLayout(mainContentArea);
-    
-    QLabel *mainLabel = new QLabel("Main Content Area", mainContentArea);
-    mainLabel->setStyleSheet("QLabel { color: #ffffff; font-size: 18px; font-weight: bold; }");
-    mainLabel->setAlignment(Qt::AlignCenter);
-    mainContentLayout->addWidget(mainLabel);
-    
+    // Add main content area (video player + timeline placeholder)
+    MainContentWidget *mainContentArea = new MainContentWidget(&window);
     contentLayout->addWidget(mainContentArea, 1);
 
     // Add Right Sidebar
@@ -231,6 +224,11 @@ int main(int argc, char *argv[])
     QObject::connect(headerBar, &HeaderBarWidget::exportClicked, []() {
         qDebug() << "Export action triggered";
     });
+
+    // Play selected media from right sidebar
+    QObject::connect(rightSidebar, &RightSidebarWidget::mediaSelected, mainContentArea, &MainContentWidget::openMedia);
+    QObject::connect(leftTabBar, &LeftTabBarWidget::vintageFilterChanged, mainContentArea, &MainContentWidget::setVintageEnabled);
+    QObject::connect(leftTabBar, &LeftTabBarWidget::brightnessChanged, mainContentArea, &MainContentWidget::setBrightness);
 
     window.show();
     return app.exec();

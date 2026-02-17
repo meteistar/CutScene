@@ -28,6 +28,7 @@ public:
 
 signals:
     void mediaImported(const MediaEntry &entry);
+    void mediaSelected(const QString &filePath);
 
 private slots:
     void onAddClicked();

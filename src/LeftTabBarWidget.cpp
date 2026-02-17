@@ -134,6 +134,7 @@ void LeftTabBarWidget::setupContent()
         "} "
     );
     effectsLayout->addWidget(brightnessSlider);
+    connect(brightnessSlider, &QSlider::valueChanged, this, &LeftTabBarWidget::brightnessChanged);
     
     // Contrast
     QLabel *contrastLabel = new QLabel("Contrast", m_effectsContent);
@@ -304,7 +305,9 @@ void LeftTabBarWidget::setupContent()
     // Create filter buttons
     for (int i = 0; i < 8; ++i) {
         QPushButton *filterButton = new QPushButton(filterNames[i], m_filtersContent);
+        const bool isVintageButton = (filterNames[i] == "Vintage");
         filterButton->setFixedSize(100, 60);
+        filterButton->setCheckable(isVintageButton);
         filterButton->setStyleSheet(
             "QPushButton { "
             "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
@@ -314,6 +317,11 @@ void LeftTabBarWidget::setupContent()
             "    border-radius: 8px; "
             "    font-size: 12px; "
             "    font-weight: bold; "
+            "} "
+            "QPushButton:checked { "
+            "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+            "        stop:0 #22c55e, stop:1 #16a34a); "
+            "    border: 2px solid #ecfccb; "
             "} "
             "QPushButton:hover { "
             "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
@@ -332,8 +340,11 @@ void LeftTabBarWidget::setupContent()
         filtersGrid->addWidget(filterButton, row, col);
         
         // Connect signal
-        connect(filterButton, &QPushButton::clicked, [filterNames, i]() {
+        connect(filterButton, &QPushButton::clicked, this, [this, filterNames, i, isVintageButton](bool checked) {
             qDebug() << "Filter clicked:" << filterNames[i];
+            if (isVintageButton) {
+                emit vintageFilterChanged(checked);
+            }
         });
     }
     

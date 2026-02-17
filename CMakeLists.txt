@@ -4,7 +4,7 @@ project(CutScene VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets)
 find_package(FFMPEG REQUIRED)
 
 qt_standard_project_setup()
@@ -19,6 +19,8 @@ qt_add_executable(appCutScene
     src/LeftTabBarWidget.h
     src/RightSidebarWidget.cpp
     src/RightSidebarWidget.h
+    src/MainContentWidget.cpp
+    src/MainContentWidget.h
     # src/MediaItemModel.h
     # src/MediaItemModel.cpp
     src/MediaImageProvider.h
@@ -59,7 +61,7 @@ target_link_directories(appCutScene PRIVATE ${FFMPEG_LIBRARY_DIRS})
 
 
 target_link_libraries(appCutScene
-    PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets
+    PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Multimedia Qt6::MultimediaWidgets
     PRIVATE avcodec
     PRIVATE avformat
     PRIVATE avutil
