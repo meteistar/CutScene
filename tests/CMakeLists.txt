@@ -1,10 +1,12 @@
 add_executable(cutscene_tests
-    smoke_test.cpp
+    test_main.cpp
+    drop_widget_test.cpp
 )
 
 target_link_libraries(cutscene_tests
     PRIVATE
-        GTest::gtest_main
+        GTest::gtest
+        Qt6::Widgets
 )
 
 include(GoogleTest)
