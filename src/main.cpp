@@ -11,6 +11,8 @@
 #include <QPixmap>
 #include <QFileInfo>
 #include <QTime>
+#include <QEvent>
+#include <QUrl>
 #include "VideoThumbnailLoader.h"
 #include "HeaderBarWidget.h"
 #include "LeftTabBarWidget.h"
@@ -24,6 +26,76 @@ extern "C" {
 #include <libavutil/imgutils.h>  // av_image_get_buffer_size, av_image_fill_arrays
 #include <libavutil/avutil.h>
 }
+
+class AppDropFilter : public QObject
+{
+public:
+    explicit AppDropFilter(RightSidebarWidget *sidebar, QObject *parent = nullptr)
+        : QObject(parent)
+        , m_sidebar(sidebar)
+    {
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        Q_UNUSED(watched);
+        if (!m_sidebar) {
+            return false;
+        }
+
+        if (event->type() == QEvent::DragEnter) {
+            auto *dragEvent = static_cast<QDragEnterEvent *>(event);
+            if (firstSupportedFile(dragEvent->mimeData()).isEmpty()) {
+                return false;
+            }
+            dragEvent->acceptProposedAction();
+            return true;
+        }
+
+        if (event->type() == QEvent::Drop) {
+            auto *dropEvent = static_cast<QDropEvent *>(event);
+            const QString path = firstSupportedFile(dropEvent->mimeData());
+            if (path.isEmpty()) {
+                return false;
+            }
+            m_sidebar->importMediaFile(path);
+            dropEvent->acceptProposedAction();
+            return true;
+        }
+
+        return false;
+    }
+
+private:
+    static QString firstSupportedFile(const QMimeData *mimeData)
+    {
+        if (!mimeData || !mimeData->hasUrls()) {
+            return {};
+        }
+
+        const QList<QUrl> urls = mimeData->urls();
+        for (const QUrl &url : urls) {
+            if (!url.isLocalFile()) {
+                continue;
+            }
+
+            const QString path = url.toLocalFile();
+            const QFileInfo info(path);
+            if (!info.exists() || !info.isFile()) {
+                continue;
+            }
+
+            if (info.suffix().compare("mp4", Qt::CaseInsensitive) == 0) {
+                return path;
+            }
+        }
+
+        return {};
+    }
+
+    RightSidebarWidget *m_sidebar;
+};
 
 // class VideoThumbnailLoader : public QObject {
 //     Q_OBJECT
@@ -211,6 +283,10 @@ int main(int argc, char *argv[])
     RightSidebarWidget *rightSidebar = new RightSidebarWidget(&window);
     contentLayout->addWidget(rightSidebar);
     mainLayout->addLayout(contentLayout);
+
+    window.setAcceptDrops(true);
+    auto *dropFilter = new AppDropFilter(rightSidebar, &window);
+    app.installEventFilter(dropFilter);
 
     // Connect header bar signals
     QObject::connect(headerBar, &HeaderBarWidget::fileClicked, []() {

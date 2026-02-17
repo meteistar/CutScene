@@ -25,6 +25,7 @@ class RightSidebarWidget : public QWidget
 
 public:
     explicit RightSidebarWidget(QWidget *parent = nullptr);
+    void importMediaFile(const QString &path);
 
 signals:
     void mediaImported(const MediaEntry &entry);
