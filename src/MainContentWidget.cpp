@@ -21,6 +21,7 @@ MainContentWidget::MainContentWidget(QWidget *parent)
     , m_audioOutput(new QAudioOutput(this))
     , m_videoSink(new QVideoSink(this))
     , m_vintageEnabled(false)
+    , m_brightness(50)
     , m_durationMs(0)
 {
     setStyleSheet("MainContentWidget { background-color: #1e1e1e; }");
@@ -93,6 +94,15 @@ void MainContentWidget::setVintageEnabled(bool enabled)
     }
 }
 
+
+void MainContentWidget::setBrightness(int value)
+{
+    m_brightness = qBound(0, value, 100);
+    if (!m_currentFrame.isNull()) {
+        renderFrame(m_currentFrame);
+    }
+}
+
 void MainContentWidget::togglePlay()
 {
     if (m_player->playbackState() == QMediaPlayer::PlayingState) {
@@ -157,6 +167,7 @@ void MainContentWidget::onVideoFrameChanged(const QVideoFrame &frame)
 void MainContentWidget::renderFrame(const QImage &frame)
 {
     QImage output = m_vintageEnabled ? applyVintage(frame) : frame;
+    output = applyBrightness(output, m_brightness);
     const QPixmap pixmap = QPixmap::fromImage(output).scaled(
         m_videoLabel->size(),
         Qt::KeepAspectRatio,
@@ -186,6 +197,29 @@ QImage MainContentWidget::applyVintage(const QImage &source)
             line[x] = qRgba(fadedR, fadedG, fadedB, qAlpha(line[x]));
         }
     }
+    return img;
+}
+
+
+QImage MainContentWidget::applyBrightness(const QImage &source, int value)
+{
+    if (value == 50) {
+        return source;
+    }
+
+    QImage img = source.convertToFormat(QImage::Format_ARGB32);
+    const int delta = static_cast<int>((value - 50) * 2.55);
+
+    for (int y = 0; y < img.height(); ++y) {
+        QRgb *line = reinterpret_cast<QRgb *>(img.scanLine(y));
+        for (int x = 0; x < img.width(); ++x) {
+            const int r = qBound(0, qRed(line[x]) + delta, 255);
+            const int g = qBound(0, qGreen(line[x]) + delta, 255);
+            const int b = qBound(0, qBlue(line[x]) + delta, 255);
+            line[x] = qRgba(r, g, b, qAlpha(line[x]));
+        }
+    }
+
     return img;
 }
 

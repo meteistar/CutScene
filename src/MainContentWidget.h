@@ -22,6 +22,7 @@ public:
 public slots:
     void openMedia(const QString &filePath);
     void setVintageEnabled(bool enabled);
+    void setBrightness(int value);
 
 private slots:
     void togglePlay();
@@ -36,6 +37,7 @@ private:
     static QString formatTime(qint64 ms);
     void renderFrame(const QImage &frame);
     static QImage applyVintage(const QImage &source);
+    static QImage applyBrightness(const QImage &source, int value);
     void resizeEvent(QResizeEvent *event) override;
 
     QVBoxLayout *m_rootLayout;
@@ -57,6 +59,7 @@ private:
     QVideoSink *m_videoSink;
     QImage m_currentFrame;
     bool m_vintageEnabled;
+    int m_brightness;
     qint64 m_durationMs;
 };
 
