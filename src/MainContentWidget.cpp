@@ -3,6 +3,7 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QUrl>
+#include <array>
 
 MainContentWidget::MainContentWidget(QWidget *parent)
     : QWidget(parent)
@@ -97,7 +98,12 @@ void MainContentWidget::setVintageEnabled(bool enabled)
 
 void MainContentWidget::setBrightness(int value)
 {
-    m_brightness = qBound(0, value, 100);
+    const int clampedValue = qBound(0, value, 100);
+    if (m_brightness == clampedValue) {
+        return;
+    }
+
+    m_brightness = clampedValue;
     if (!m_currentFrame.isNull()) {
         renderFrame(m_currentFrame);
     }
@@ -208,15 +214,22 @@ QImage MainContentWidget::applyBrightness(const QImage &source, int value)
     }
 
     QImage img = source.convertToFormat(QImage::Format_ARGB32);
-    const int delta = static_cast<int>((value - 50) * 2.55);
+    const int delta = qRound((value - 50) * 2.55);
+
+    std::array<int, 256> lut{};
+    for (int i = 0; i < 256; ++i) {
+        lut[static_cast<size_t>(i)] = qBound(0, i + delta, 255);
+    }
 
     for (int y = 0; y < img.height(); ++y) {
         QRgb *line = reinterpret_cast<QRgb *>(img.scanLine(y));
         for (int x = 0; x < img.width(); ++x) {
-            const int r = qBound(0, qRed(line[x]) + delta, 255);
-            const int g = qBound(0, qGreen(line[x]) + delta, 255);
-            const int b = qBound(0, qBlue(line[x]) + delta, 255);
-            line[x] = qRgba(r, g, b, qAlpha(line[x]));
+            line[x] = qRgba(
+                lut[static_cast<size_t>(qRed(line[x]))],
+                lut[static_cast<size_t>(qGreen(line[x]))],
+                lut[static_cast<size_t>(qBlue(line[x]))],
+                qAlpha(line[x])
+            );
         }
     }
 
