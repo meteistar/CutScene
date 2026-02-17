@@ -4,6 +4,8 @@ project(CutScene VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(CTest)
+
 find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets)
 find_package(FFMPEG REQUIRED)
 
@@ -74,3 +76,19 @@ install(TARGETS appCutScene
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+if(BUILD_TESTING)
+    include(FetchContent)
+
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
+
+    # Prevent GoogleTest from overriding our compiler/linker options on Windows.
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    FetchContent_MakeAvailable(googletest)
+
+    add_subdirectory(tests)
+endif()
