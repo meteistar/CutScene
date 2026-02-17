@@ -9,7 +9,7 @@ struct MediaItem {
     QString fileName;
     QString duration;
     QString fileSize;
-    QImage  thumbnail;
+    QImage thumbnail;
 };
 
 class MediaItemModel : public QAbstractListModel {
@@ -35,9 +35,8 @@ public:
     QImage requestImage(const QString &id) const;
 
 private slots:
-    void onThumbnailReady(const QString &imageId, const QString &duration);
+    void onThumbnailReady(const QString &filePath, const QString &imagePath, const QString &duration);
 
 private:
     QVector<MediaItem> m_items;
-    QString m_pendingFilePath;
 };
