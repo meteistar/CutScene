@@ -3,6 +3,7 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QUrl>
+#include <array>
 
 MainContentWidget::MainContentWidget(QWidget *parent)
     : QWidget(parent)
@@ -21,6 +22,7 @@ MainContentWidget::MainContentWidget(QWidget *parent)
     , m_audioOutput(new QAudioOutput(this))
     , m_videoSink(new QVideoSink(this))
     , m_vintageEnabled(false)
+    , m_brightness(50)
     , m_durationMs(0)
 {
     setStyleSheet("MainContentWidget { background-color: #1e1e1e; }");
@@ -93,6 +95,20 @@ void MainContentWidget::setVintageEnabled(bool enabled)
     }
 }
 
+
+void MainContentWidget::setBrightness(int value)
+{
+    const int clampedValue = qBound(0, value, 100);
+    if (m_brightness == clampedValue) {
+        return;
+    }
+
+    m_brightness = clampedValue;
+    if (!m_currentFrame.isNull()) {
+        renderFrame(m_currentFrame);
+    }
+}
+
 void MainContentWidget::togglePlay()
 {
     if (m_player->playbackState() == QMediaPlayer::PlayingState) {
@@ -157,6 +173,7 @@ void MainContentWidget::onVideoFrameChanged(const QVideoFrame &frame)
 void MainContentWidget::renderFrame(const QImage &frame)
 {
     QImage output = m_vintageEnabled ? applyVintage(frame) : frame;
+    output = applyBrightness(output, m_brightness);
     const QPixmap pixmap = QPixmap::fromImage(output).scaled(
         m_videoLabel->size(),
         Qt::KeepAspectRatio,
@@ -186,6 +203,36 @@ QImage MainContentWidget::applyVintage(const QImage &source)
             line[x] = qRgba(fadedR, fadedG, fadedB, qAlpha(line[x]));
         }
     }
+    return img;
+}
+
+
+QImage MainContentWidget::applyBrightness(const QImage &source, int value)
+{
+    if (value == 50) {
+        return source;
+    }
+
+    QImage img = source.convertToFormat(QImage::Format_ARGB32);
+    const int delta = qRound((value - 50) * 2.55);
+
+    std::array<int, 256> lut{};
+    for (int i = 0; i < 256; ++i) {
+        lut[static_cast<size_t>(i)] = qBound(0, i + delta, 255);
+    }
+
+    for (int y = 0; y < img.height(); ++y) {
+        QRgb *line = reinterpret_cast<QRgb *>(img.scanLine(y));
+        for (int x = 0; x < img.width(); ++x) {
+            line[x] = qRgba(
+                lut[static_cast<size_t>(qRed(line[x]))],
+                lut[static_cast<size_t>(qGreen(line[x]))],
+                lut[static_cast<size_t>(qBlue(line[x]))],
+                qAlpha(line[x])
+            );
+        }
+    }
+
     return img;
 }
 

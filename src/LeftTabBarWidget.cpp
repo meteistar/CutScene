@@ -134,6 +134,7 @@ void LeftTabBarWidget::setupContent()
         "} "
     );
     effectsLayout->addWidget(brightnessSlider);
+    connect(brightnessSlider, &QSlider::valueChanged, this, &LeftTabBarWidget::brightnessChanged);
     
     // Contrast
     QLabel *contrastLabel = new QLabel("Contrast", m_effectsContent);

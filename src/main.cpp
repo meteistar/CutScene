@@ -228,6 +228,7 @@ int main(int argc, char *argv[])
     // Play selected media from right sidebar
     QObject::connect(rightSidebar, &RightSidebarWidget::mediaSelected, mainContentArea, &MainContentWidget::openMedia);
     QObject::connect(leftTabBar, &LeftTabBarWidget::vintageFilterChanged, mainContentArea, &MainContentWidget::setVintageEnabled);
+    QObject::connect(leftTabBar, &LeftTabBarWidget::brightnessChanged, mainContentArea, &MainContentWidget::setBrightness);
 
     window.show();
     return app.exec();
