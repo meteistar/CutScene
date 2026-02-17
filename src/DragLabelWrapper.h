@@ -1,7 +1,6 @@
 #pragma once
 #include <QQuickItem>
 #include <QWidget>
-#include <QWidget>
 #include "DragLabel.h"
 
 class DragLabelWrapper : public QQuickItem {
@@ -17,4 +16,3 @@ public:
         container->show();
     }
 };
-
