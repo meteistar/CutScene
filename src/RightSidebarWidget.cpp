@@ -87,6 +87,15 @@ void RightSidebarWidget::onAddClicked()
 {
     const QString path = QFileDialog::getOpenFileName(this, "Import Media");
     if (path.isEmpty()) return;
+    importMediaFile(path);
+}
+
+void RightSidebarWidget::importMediaFile(const QString &path)
+{
+    QFileInfo fileInfo(path);
+    if (!fileInfo.exists() || !fileInfo.isFile()) {
+        return;
+    }
     addMediaToModel(path);
 }
 
